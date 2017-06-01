@@ -22,8 +22,9 @@ RUN cd $HOME \
 # Ensure signals are forwarded to the JVM process correctly for graceful shutdown
 ENV LAUNCH_JBOSS_IN_BACKGROUND true
 
-ENV CONNECTOR_VERSION mysql-connector-java-5.1.40
+ENV CONNECTOR_VERSION mysql-connector-java-5.1.42
 RUN mkdir -p /opt/jboss/wildfly/modules/com/mysql/main
+
 RUN curl -O -L https://dev.mysql.com/get/Downloads/Connector-J/$CONNECTOR_VERSION.zip \
   && unzip $CONNECTOR_VERSION.zip \
   && mv $CONNECTOR_VERSION/$CONNECTOR_VERSION-bin.jar /opt/jboss/wildfly/modules/com/mysql/main/$CONNECTOR_VERSION.jar \
