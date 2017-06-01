@@ -5,7 +5,7 @@ FROM jboss/base-jdk:8
 ENV WILDFLY_VERSION 10.1.0.Final
 ENV WILDFLY_SHA1 9ee3c0255e2e6007d502223916cefad2a1a5e333
 ENV JBOSS_HOME /opt/jboss/wildfly
-ENV MYSQL_CONNECTOR_VERSION 5.1.16
+
 
 USER root
 
@@ -22,7 +22,7 @@ RUN cd $HOME \
 
 # Ensure signals are forwarded to the JVM process correctly for graceful shutdown
 ENV LAUNCH_JBOSS_IN_BACKGROUND true
-
+ENV MYSQL_CONNECTOR_VERSION 5.1.16
 RUN wget "http://central.maven.org/maven2/mysql/mysql-connector-java/${MYSQL_CONNECTOR_VERSION}/mysql-connector-java-${MYSQL_CONNECTOR_VERSION}.jar" -O /opt/jboss/mysql-connector-java-${MYSQL_CONNECTOR_VERSION}-bin.jar
 # this is to fix "Deploying non-JDBC-compliant driver class"
 RUN mkdir -p META-INF/services
