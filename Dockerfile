@@ -6,7 +6,6 @@ ENV WILDFLY_VERSION 10.1.0.Final
 ENV WILDFLY_SHA1 9ee3c0255e2e6007d502223916cefad2a1a5e333
 ENV JBOSS_HOME /opt/jboss/wildfly
 
-
 USER root
 
 # Add the WildFly distribution to /opt, and make wildfly the owner of the extracted tar content
@@ -22,22 +21,14 @@ RUN cd $HOME \
 
 # Ensure signals are forwarded to the JVM process correctly for graceful shutdown
 ENV LAUNCH_JBOSS_IN_BACKGROUND true
-#ENV MYSQL_CONNECTOR_VERSION 5.1.16
-#RUN wget "http://central.maven.org/maven2/mysql/mysql-connector-java/${MYSQL_CONNECTOR_VERSION}/mysql-connector-java-${MYSQL_CONNECTOR_VERSION}.jar" -O /opt/jboss/mysql-connector-java-${MYSQL_CONNECTOR_VERSION}-bin.jar
-RUN wget http://central.maven.org/maven2/mysql/mysql-connector-java/5.1.16/mysql-connector-java-5.1.16.jar -O /opt/jboss/mysql-connector-java-5.1.16-bin.jar
-# this is to fix "Deploying non-JDBC-compliant driver class"
-RUN mkdir -p META-INF/services
-RUN echo "com.mysql.jdbc.Driver" > META-INF/services/java.sql.Driver
-RUN jar uf /opt/jboss/mysql-connector-java-${MYSQL_CONNECTOR_VERSION}-bin.jar META-INF
 
-ADD datasource.cli /opt/jboss/datasource.cli
-RUN sed -i -e s/MYSQL-CONNECTOR-VERSION/${MYSQL_CONNECTOR_VERSION}/g /opt/jboss/datasource.cli
-
-RUN /opt/jboss/wildfly/bin/jboss-cli.sh --file=/opt/jboss/datasource.cli
-
-# Fix for WFLYCTL0056: Could not rename /opt/jboss/wildfly/standalone/configuration/standalone_xml_history/current to ...
-RUN rm -rf /opt/jboss/wildfly-$WILDFLY_VERSION.Final/standalone/configuration/standalone_xml_history
-
+ENV CONNECTOR_VERSION mysql-connector-java-5.1.40
+RUN mkdir -p /opt/jboss/wildfly/modules/com/mysql/main
+RUN curl -O -L https://dev.mysql.com/get/Downloads/Connector-J/$CONNECTOR_VERSION.zip \
+  && unzip $CONNECTOR_VERSION.zip \
+  && mv $CONNECTOR_VERSION/$CONNECTOR_VERSION-bin.jar /opt/jboss/wildfly/modules/com/mysql/main/$CONNECTOR_VERSION.jar \
+  && rm -r $CONNECTOR_VERSION && rm $CONNECTOR_VERSION.zip
+COPY module.xml /opt/jboss/wildfly/modules/com/mysql/main/module.xml
 
 USER jboss
 
