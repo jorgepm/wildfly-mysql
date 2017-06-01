@@ -22,8 +22,9 @@ RUN cd $HOME \
 
 # Ensure signals are forwarded to the JVM process correctly for graceful shutdown
 ENV LAUNCH_JBOSS_IN_BACKGROUND true
-ENV MYSQL_CONNECTOR_VERSION 5.1.16
-RUN wget "http://central.maven.org/maven2/mysql/mysql-connector-java/${MYSQL_CONNECTOR_VERSION}/mysql-connector-java-${MYSQL_CONNECTOR_VERSION}.jar" -O /opt/jboss/mysql-connector-java-${MYSQL_CONNECTOR_VERSION}-bin.jar
+#ENV MYSQL_CONNECTOR_VERSION 5.1.16
+#RUN wget "http://central.maven.org/maven2/mysql/mysql-connector-java/${MYSQL_CONNECTOR_VERSION}/mysql-connector-java-${MYSQL_CONNECTOR_VERSION}.jar" -O /opt/jboss/mysql-connector-java-${MYSQL_CONNECTOR_VERSION}-bin.jar
+RUN wget http://central.maven.org/maven2/mysql/mysql-connector-java/5.1.16/mysql-connector-java-5.1.16.jar -O /opt/jboss/mysql-connector-java-5.1.16-bin.jar
 # this is to fix "Deploying non-JDBC-compliant driver class"
 RUN mkdir -p META-INF/services
 RUN echo "com.mysql.jdbc.Driver" > META-INF/services/java.sql.Driver
