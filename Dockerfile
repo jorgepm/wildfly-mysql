@@ -23,9 +23,10 @@ RUN cd $HOME \
 ENV LAUNCH_JBOSS_IN_BACKGROUND true
 
 ENV CONNECTOR_VERSION mysql-connector-java-8.0.13
+
 RUN mkdir -p /opt/jboss/wildfly/modules/com/mysql/main
 
-RUN curl -O -L https://dev.mysql.com/get/Downloads/Connector-J/$CONNECTOR_VERSION.zip \
+RUN curl -O -L https://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java-8.0.13.zip \
   && unzip $CONNECTOR_VERSION.zip \
   && mv $CONNECTOR_VERSION/$CONNECTOR_VERSION-bin.jar /opt/jboss/wildfly/modules/com/mysql/main/$CONNECTOR_VERSION.jar \
   && rm -r $CONNECTOR_VERSION && rm $CONNECTOR_VERSION.zip
