@@ -28,7 +28,7 @@ RUN mkdir -p /opt/jboss/wildfly/modules/com/mysql/main
 
 RUN curl -O -L https://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java-8.0.13.zip \
   && unzip $CONNECTOR_VERSION.zip \
-  && mv $CONNECTOR_VERSION/$CONNECTOR_VERSION-bin.jar /opt/jboss/wildfly/modules/com/mysql/main/$CONNECTOR_VERSION.jar \
+  && mv $CONNECTOR_VERSION/$CONNECTOR_VERSION.jar /opt/jboss/wildfly/modules/com/mysql/main/$CONNECTOR_VERSION.jar \
   && rm -r $CONNECTOR_VERSION && rm $CONNECTOR_VERSION.zip
 COPY module.xml /opt/jboss/wildfly/modules/com/mysql/main/module.xml
 
